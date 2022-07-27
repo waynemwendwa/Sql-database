@@ -1,8 +1,10 @@
 package com.wayne.sqlite
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -16,12 +18,12 @@ class MainActivity : AppCompatActivity() {
         val inputQuantity: EditText = findViewById(R.id.inputQuantity)
         val inputPrice: EditText = findViewById(R.id.inputPrice)
         val buttonSave: Button = findViewById(R.id.buttonSave)
-        val buttonShow : Button = findViewById(R.id.buttonShow)
-        val buttonDelete : Button = findViewById(R.id.buttonDelete)
-        val buttonFetchOne : Button = findViewById(R.id.buttonFetchOne)
+        val buttonShow: Button = findViewById(R.id.buttonShow)
+        val buttonDelete: Button = findViewById(R.id.buttonDelete)
+        val buttonFetchOne: Button = findViewById(R.id.buttonFetchOne)
 
         //Database
-        val db = DBHelper(this,null)
+        val db = DBHelper(this, null)
 
         buttonSave.setOnClickListener {
             val name = inputName.text.toString().trim()
@@ -46,26 +48,42 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonShow.setOnClickListener {
-            val products = db.getProducts() //cursor
-            while (products!!.moveToNext()){
-                val id = products.getInt(0)
-                val name = products.getString(1)
-                val quantity = products.getInt(2)
-                val price = products.getString(3)
-                Log.d("PRODUCT","$id : $name : $quantity: $price")
-            }
-            db.close()
+            val intent = Intent(this, DisplayActivity::class.java)
+            startActivity(intent)
+            /* val products = db.getProducts() //cursor
+             while (products!!.moveToNext()){
+                 val id = products.getInt(0)
+                 val name = products.getString(1)
+                 val quantity = products.getInt(2)
+                 val price = products.getString(3)
+                 Log.d("PRODUCT","$id : $name : $quantity: $price")
+             }
+             db.close()*/
         }
 
         buttonDelete.setOnClickListener {
-            db.deleteProduct(1)
+            // db.deleteProduct(1)
+            //update
+            db.updateProduct(5, "Basmati Rice", 55, 70)
+
+            //search
+            val result = db.searchProducts("Jordan")
+            val count = result!!.count
+            Log.d("PRODUCT", "We found $count products")
         }
 
         buttonFetchOne.setOnClickListener {
             val p = db.fetchOneProduct(2)
             p!!.moveToFirst()
             val name = p.getString(1)
-            Toast.makeText(this,name,Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, name, Toast.LENGTH_SHORT).show()
         }
+
+        //hide buttons
+        buttonDelete.visibility = View.GONE
+        buttonFetchOne.visibility = View.GONE
+
+        //Display activity
+        //Update activity
     }
 }

@@ -31,7 +31,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     // This method is for adding data in our database
-    fun addProduct(name : String, price : Int , quantity:Int ){
+    fun addProduct(name: String, price: Int, quantity: Int) {
 
         // below we are creating
         // a content values variable
@@ -71,34 +71,37 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return db.rawQuery("SELECT * FROM $TABLE_NAME", null)
 
     }
-    
-    fun deleteProduct(id : Int){
+
+    fun deleteProduct(id: Int) {
         val db = this.writableDatabase
         val selection = arrayOf(id.toString())
-        db.delete(TABLE_NAME,"$ID_COL = ?",selection)
+        db.delete(TABLE_NAME, "$ID_COL = ?", selection)
         db.close()
-    }
-    
-    fun fetchOneProduct(id : Int): Cursor? {
-        val sql = "SELECT * FROM $TABLE_NAME WHERE $ID_COL = $id"
-        val db = this.readableDatabase
-        return db.rawQuery(sql,null)
-    }
-    
-    fun updateProduct(id:Int,name:String,quantity: Int,price: Int){
-        val sql = "UPDATE $TABLE_NAME SET $NAME_COl =$name,$QUANTITY_COL=$quantity,$PRICE_COL=$price WHERE $ID_COL=$id"
-        val db = this.writableDatabase
-        db.rawQuery(sql,null)
-        db.close()
-    }
-    
-    fun searchProducts(search:String): Cursor? {
-        val sql = "SELECT * FROM $TABLE_NAME WHERE $NAME_COl LIKE %% $search"
-        val db = this.readableDatabase
-        return db.rawQuery(sql,null)
     }
 
-    companion object{
+    fun fetchOneProduct(id: Int): Cursor? {
+        val sql = "SELECT * FROM $TABLE_NAME WHERE $ID_COL = $id"
+        val db = this.readableDatabase
+        return db.rawQuery(sql, null)
+    }
+
+    fun updateProduct(id: Int, name: String, quantity: Int, price: Int) {
+        val contentValues = ContentValues()
+        contentValues.put(NAME_COl, name)
+        contentValues.put(QUANTITY_COL, quantity)
+        contentValues.put(PRICE_COL, price)
+        val db = this.writableDatabase
+        db.update(TABLE_NAME, contentValues, "$ID_COL = ?", arrayOf(id.toString()))
+        db.close()
+    }
+
+    fun searchProducts(search: String): Cursor? {
+        val sql = "SELECT * FROM $TABLE_NAME WHERE $NAME_COl LIKE '%$search%'"
+        val db = this.readableDatabase
+        return db.rawQuery(sql, null)
+    }
+
+    companion object {
         // here we have defined variables for our database
 
         // below is variable for database name
