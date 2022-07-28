@@ -36,5 +36,14 @@
         android:id="@+id/buttonEditSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark"
         android:text="Update product" />
+
+    <Button
+        android:id="@+id/buttonDeleteItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_error"
+        android:text="Delete Product"
+        android:textColor="@android:color/black" />
 </LinearLayout>

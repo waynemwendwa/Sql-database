@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 
 class UpdateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +16,7 @@ class UpdateActivity : AppCompatActivity() {
         val inputEditQuantity: EditText = findViewById(R.id.inputEditQuantity)
         val inputEditPrice: EditText = findViewById(R.id.inputEditPrice)
         val buttonUpdate: Button = findViewById(R.id.buttonEditSave)
+        val buttonDelete: Button = findViewById(R.id.buttonDeleteItem)
 
         val id = intent.getIntExtra("id", 0)
         val db = DBHelper(this, null)
@@ -39,6 +41,22 @@ class UpdateActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please enter valid values", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        buttonDelete.setOnClickListener {
+            //db.deleteProduct(id)
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Delete Product")
+            builder.setMessage("Do you really want to delete this item?")
+            builder.setPositiveButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.setNegativeButton("Delete") { _, _ ->
+                db.deleteProduct(id)
+                Toast.makeText(this, "Item Deleted", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            builder.show()
         }
     }
 }

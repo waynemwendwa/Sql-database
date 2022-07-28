@@ -14,12 +14,15 @@
         android:theme="@style/Theme.Sqlite"
         tools:targetApi="31">
         <activity
+            android:label="Edit page"
             android:name=".UpdateActivity"
             android:exported="false" />
         <activity
+            android:label="Display Products"
             android:name=".DisplayActivity"
             android:exported="false" />
         <activity
+            android:label="Home Page"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
